@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {{ children_formset.management_form }}
+        {{ children_formset.non_form_errors }}
+
+        {% for child_form in children_formset.forms %}
+        <table style="width: 100%; border: 1px solid #ddd;">
+            {{ child_form.as_table }}
+
+            {% if child_form.nested %}
+            {{ child_form.nested.management_form }}
+            {{ child_form.nested.non_form_errors }}
+
+            {% for nested_form in child_form.nested.forms %}
+            <br>
+            <tr>
+                <td>
+                    <table>
+                        {{ nested_form.as_table }}
+                    </table>
+                </td>
+            </tr>
+
+
+
+            {% endfor %}
+
+            {% endif %}
+            <br><br>
+        </table>
+        {% endfor %}
+
+        <br><br>
+        <button>submit</button>
+    </form>
+</body>
+
+</html>
